@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HTML5 and CSS3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    
+    <style>
+    </style>
+  </head>
+
+  <body>
+    
+    <canvas id="clock" width="600" height="600">
+      Please upgrade your browser 
+    </canvas>
+    <br><br>
+    <canvas id="newClock" width="600" height="150">
+      Please upgrade your browser 
+    </canvas>
+    
+    <script>
+      function setNewTime() {
+        var newCanvas = document.getElementById("newClock");
+        var newContext = newCanvas.getContext("2d");
+        var width = newCanvas.width;
+        var height = newCanvas.height;
+        
+        newContext.fillStyle = "black";
+        newContext.fillRect(0, 0, width, height);
+        newContext.fill();
+        
+        newContext.strokeStyle = "white";
+        newContext.lineWidth = 2;
+        newContext.moveTo(width / 3, 0);
+        newContext.lineTo(width / 3, height);
+        
+        newContext.moveTo(2 * width / 3, 0);
+        newContext.lineTo(2 * width / 3, height);
+        newContext.stroke();
+        
+        var date = new Date();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+        
+        if (hours < 10) {
+          hours = "0" + hours.toString();
+        }
+        
+        if (minutes < 10) {
+          minutes = "0" + minutes.toString();
+        }
+        
+        if (seconds < 10) {
+          seconds = "0" + seconds.toString();
+        }
+        
+        newContext.font = height * 0.9 + "px arial";
+        newContext.fillStyle = "white";
+        newContext.textAlign = "center";
+        newContext.textBaseline = "middle";
+        
+        newContext.fillText(hours.toString(), width / 6, height / 2 + height * 0.08);
+        
+        newContext.fillText(minutes.toString(), width / 2, height / 2 + height * 0.08);
+        
+        newContext.fillText(seconds.toString(), 5* width / 6, height / 2 + height * 0.08);
+        
+        
+        
+        
+        
+      }
+      function setTime() {
+        var canvas = document.getElementById("clock");
+        var context = canvas.getContext("2d");
+
+        var radiusClock = canvas.width / 2;
+        var radiusSmall = radiusClock / 25;
+
+        context.fillStyle = "black";
+        context.beginPath();
+        context.arc(radiusClock, radiusClock, radiusClock, 0, 2*Math.PI);
+        context.fill();
+
+        context.font = radiusClock / 10 + "px arial";
+        context.fillStyle = "white";
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+
+        for (let i = 1; i <= 12; i++) {
+          context.fillText(i.toString(), radiusClock + radiusClock * 0.9 * Math.sin(i * (2*Math.PI / 12)), radiusClock - (radiusClock * 0.9 * Math.cos(i * (2*Math.PI / 12))));
+        }
+
+        var date = new Date();
+
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+
+        var fullHours = hours % 12 + minutes / 60 + seconds / 3600;
+        var hoursAngle = fullHours * 2 * Math.PI / 12;
+        var minutesAngle = minutes * 2 * Math.PI / 60;
+        var secondsAngle = seconds * 2 * Math.PI / 60;
+
+        context.strokeStyle = "white";
+        context.lineWidth = 7;
+        context.moveTo(radiusClock, radiusClock);
+        context.lineTo(radiusClock + radiusClock * 0.6 * Math.sin(hoursAngle), radiusClock - (radiusClock * 0.6 * Math.cos(hoursAngle)));
+        context.stroke();
+
+        context.lineWidth = 3;
+        context.moveTo(radiusClock, radiusClock);
+        context.lineTo(radiusClock + radiusClock * 0.7 * Math.sin(minutesAngle), radiusClock - (radiusClock * 0.7 * Math.cos(minutesAngle)));
+        context.stroke();
+
+        context.lineWidth = 2;
+        context.moveTo(radiusClock, radiusClock);
+        context.lineTo(radiusClock + radiusClock * 0.9 * Math.sin(secondsAngle), radiusClock - (radiusClock * 0.9 * Math.cos(secondsAngle)));
+        context.stroke();
+
+
+
+        context.beginPath();
+        context.fillStyle = "white";
+        context.arc(radiusClock, radiusClock, radiusSmall, 0, 2*Math.PI);
+        context.fill();
+
+        context.stroke();  
+      }
+      
+      setInterval(setNewTime, 1000);
+      
+      setInterval(setTime, 1000);
+    
+      
+      
+    </script>
+  </body>
+</html>
